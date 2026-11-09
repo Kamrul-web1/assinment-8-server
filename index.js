@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import { MongoClient } from 'mongodb';
-
+import { ObjectId } from "mongodb";
 const PORT = 5000;
 const app = express();
 
@@ -92,6 +92,24 @@ app.get('/manage-events', async (req, res) => {
     });
   }
 });
+// updet 
+app.patch("/manage-events/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await eventsCollection.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: req.body,
+      }
+    );
+
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({ message: "Update failed" });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
