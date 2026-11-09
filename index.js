@@ -55,6 +55,8 @@ app.post('/create-event', async (req, res) => {
 app.get('/', (req, res) => {
   res.send('hello kamrul');
 });
+
+
 app.get('/upcoming-events', async (req, res) => {
   try {
     const today = new Date().toISOString().split("T")[0];
