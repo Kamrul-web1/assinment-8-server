@@ -76,6 +76,27 @@ app.get('/upcoming-events', async (req, res) => {
     });
   }
 });
+app.get("/manage-events/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const event = await eventsCollection.findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (!event) {
+      return res.status(404).send({
+        message: "Event not found",
+      });
+    }
+
+    res.send(event);
+  } catch (error) {
+    res.status(500).send({
+      message: "Something went wrong",
+    });
+  }
+});
 app.get('/manage-events', async (req, res) => {
   try {
     const result = await eventsCollection
