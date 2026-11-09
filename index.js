@@ -109,6 +109,33 @@ app.patch("/manage-events/:id", async (req, res) => {
     res.status(500).send({ message: "Update failed" });
   }
 });
+// DEletde 
+
+app.delete('/manage-events/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const result = await eventsCollection.deleteOne({
+      _id: new ObjectId(id)
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).send({
+        message: "Event not found"
+      });
+    }
+
+    res.send({
+      message: "Event deleted successfully"
+    });
+
+  } catch (error) {
+    res.status(500).send({
+      message: "Failed to delete event",
+      error: error.message
+    });
+  }
+});
 
 
 app.listen(PORT, () => {
