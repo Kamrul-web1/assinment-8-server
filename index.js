@@ -23,7 +23,7 @@ export async function connectToMongoDB() {
     console.error("MongoDB connection failed:", err);
   }
 }
-const db = client.db('social-development');
+const db = client.db('evints-menesment');
 const eventsCollection = db.collection('events');
 connectToMongoDB();
 
@@ -72,6 +72,22 @@ app.get('/upcoming-events', async (req, res) => {
   } catch (error) {
     res.status(500).send({
       message: "Failed to fetch upcoming events",
+      error: error.message
+    });
+  }
+});
+app.get('/manage-events', async (req, res) => {
+  try {
+    const result = await eventsCollection
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    res.send(result);
+
+  } catch (error) {
+    res.status(500).send({
+      message: "Failed to fetch events",
       error: error.message
     });
   }
